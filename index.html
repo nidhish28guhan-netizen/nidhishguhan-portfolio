@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nidhish Guhan — Software Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0b0d12;
+    --surface: #12151c;
+    --surface-2: #171b24;
+    --border: #232833;
+    --border-soft: #1a1e27;
+    --text: #eef1f6;
+    --text-dim: #9aa3b2;
+    --text-faint: #5c6474;
+    --accent: #5fb3ff;
+    --accent-soft: rgba(95,179,255,0.10);
+    --accent-dim: #2c6ba3;
+    --mono: 'JetBrains Mono', monospace;
+    --display: 'Sora', sans-serif;
+    --body: 'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg); color:var(--text); font-family:var(--body); overflow-x:hidden;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+  a{color:inherit; text-decoration:none;}
+  ::selection{background:var(--accent); color:#06111c;}
+
+  #bg-canvas{position:fixed; inset:0; z-index:0; pointer-events:none;}
+
+  .aurora{position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;}
+  .aurora::before{
+    content:''; position:absolute; top:-20%; left:50%; width:900px; height:900px; transform:translateX(-50%);
+    background:radial-gradient(circle, rgba(95,179,255,0.07), transparent 65%);
+    filter:blur(10px); animation:driftSlow 18s ease-in-out infinite alternate;
+  }
+  @keyframes driftSlow{from{transform:translate(-55%,-4%) scale(1);}to{transform:translate(-45%,4%) scale(1.08);}}
+
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 6vw;
+    background:rgba(11,13,18,0.72); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .logo{font-family:var(--display); font-weight:700; font-size:16px;}
+  .logo span{color:var(--accent);}
+  .nav-links{display:flex; gap:38px; font-size:13.5px; color:var(--text-dim); font-weight:500;}
+  .nav-links a{position:relative; padding:4px 0; transition:color .25s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s; border-radius:2px;}
+  .nav-links a:hover::after{width:100%;}
+  a:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px;}
+  .nav-cta{font-family:var(--body); font-weight:600; font-size:13px; padding:10px 20px; border-radius:6px; border:1px solid var(--border); color:var(--text); transition:all .25s;}
+  .nav-cta:hover{border-color:var(--accent); color:var(--accent); background:var(--accent-soft);}
+  @media (max-width:860px){ .nav-links{display:none;} }
+
+  section{position:relative; z-index:1; padding:130px 6vw 60px;}
+  .section-inner{max-width:1160px; margin:0 auto;}
+
+  .eyebrow{
+    font-family:var(--mono); font-size:12px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:16px; font-weight:500;
+  }
+  .eyebrow::before{content:'';width:22px;height:1px;background:var(--accent);}
+
+  h1,h2,h3{font-family:var(--display);}
+
+
+  .hero{min-height:96vh; display:flex; flex-direction:column; justify-content:center; padding-top:160px;}
+  .hero-inner{max-width:780px;}
+  .hero h1{
+    font-size:clamp(2.6rem,5.6vw,4.2rem); line-height:1.08; font-weight:800; letter-spacing:-1.4px;
+    opacity:0; transform:translateY(22px); animation:rise .9s cubic-bezier(.16,1,.3,1) forwards; animation-delay:.1s;
+  }
+  .hero h1 .accent{color:var(--accent);}
+  .hero p.lead{
+    font-size:17px; color:var(--text-dim); line-height:1.75; max-width:580px; margin-top:26px;
+    opacity:0; transform:translateY(20px); animation:rise .9s cubic-bezier(.16,1,.3,1) forwards; animation-delay:.28s;
+  }
+  .hero p.lead b{color:var(--text); font-weight:600;}
+  @keyframes rise{to{opacity:1; transform:translateY(0);}}
+
+  .hero-meta{display:flex; gap:34px; margin-top:40px; flex-wrap:wrap; opacity:0; transform:translateY(20px); animation:rise .9s cubic-bezier(.16,1,.3,1) forwards; animation-delay:.46s;}
+  .hero-meta div{display:flex; flex-direction:column; gap:4px;}
+  .hero-meta .n{font-family:var(--display); font-size:1.7rem; font-weight:700; color:var(--accent);}
+  .hero-meta .l{font-size:11.5px; color:var(--text-faint); font-family:var(--mono); letter-spacing:0.5px;}
+
+  .hero-cta{margin-top:42px; display:flex; gap:16px; flex-wrap:wrap; opacity:0; transform:translateY(20px); animation:rise .9s cubic-bezier(.16,1,.3,1) forwards; animation-delay:.62s;}
+  .btn{font-family:var(--body); font-size:14px; font-weight:600; padding:14px 28px; border-radius:7px; display:inline-flex; align-items:center; gap:8px; transition:all .25s ease; border:1px solid transparent; cursor:pointer;}
+  .btn-primary{background:var(--accent); color:#071523;}
+  .btn-primary:hover{background:#7cc0ff; transform:translateY(-2px); box-shadow:0 14px 34px -10px rgba(95,179,255,0.45);}
+  .btn-ghost{border-color:var(--border); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--accent); color:var(--accent); transform:translateY(-2px);}
+
+  .scroll-cue{position:absolute; bottom:34px; left:6vw; font-family:var(--mono); font-size:10.5px; color:var(--text-faint); display:flex; align-items:center; gap:10px; letter-spacing:1px; z-index:2; transition:opacity .4s;}
+  .scroll-cue .line{width:1px; height:28px; background:linear-gradient(var(--text-faint), transparent); animation:cuepulse 2.2s infinite;}
+  @keyframes cuepulse{0%,100%{opacity:.25}50%{opacity:.9}}
+
+  .reveal{opacity:0; transform:translateY(26px); transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1);}
+  .reveal.visible{opacity:1; transform:translateY(0);}
+
+  .sec-head{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:46px; flex-wrap:wrap; gap:18px; border-bottom:1px solid var(--border-soft); padding-bottom:22px;}
+  .sec-head h2{font-size:clamp(1.7rem,3vw,2.3rem); font-weight:700; letter-spacing:-0.5px;}
+  .sec-num{font-family:var(--mono); color:var(--text-faint); font-size:12.5px;}
+
+  .about-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:64px;}
+  @media (max-width:860px){.about-grid{grid-template-columns:1fr;}}
+  .about-text p{color:var(--text-dim); line-height:1.85; font-size:15.5px; margin-bottom:18px;}
+  .about-text b{color:var(--text); font-weight:600;}
+  .fact-list{list-style:none; border-top:1px solid var(--border-soft);}
+  .fact-list li{display:flex; justify-content:space-between; padding:16px 0; border-bottom:1px solid var(--border-soft); font-size:14px;}
+  .fact-list li span:first-child{color:var(--text-faint); font-family:var(--mono); font-size:12px; letter-spacing:0.5px; text-transform:uppercase;}
+  .fact-list li span:last-child{color:var(--text); font-weight:500; text-align:right;}
+
+  .skill-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  @media (max-width:860px){.skill-cols{grid-template-columns:1fr;}}
+  .skill-card{background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:28px; transition:border-color .3s, transform .3s, background .3s;}
+  .skill-card:hover{border-color:var(--accent-dim); transform:translateY(-4px); background:var(--surface-2);}
+  .skill-card h3{font-size:13px; font-family:var(--mono); color:var(--accent); margin-bottom:18px; letter-spacing:1px; text-transform:uppercase; font-weight:500;}
+  .skill-card ul{list-style:none;}
+  .skill-card li{color:var(--text-dim); font-size:14.5px; padding:8px 0; border-top:1px solid var(--border-soft);}
+  .skill-card li:first-child{border-top:none;}
+
+  .project{
+    border:1px solid var(--border); border-radius:10px; padding:32px; margin-bottom:20px;
+    background:var(--surface); transition:border-color .3s, transform .3s, background .3s;
+    display:grid; grid-template-columns:56px 1fr; gap:24px;
+  }
+  @media (max-width:700px){.project{grid-template-columns:1fr; gap:12px;}}
+  .project:hover{border-color:var(--accent-dim); transform:translateY(-3px); background:var(--surface-2);}
+  .project .pnum{font-family:var(--mono); font-size:13px; color:var(--text-faint);}
+  .project h3{font-size:1.22rem; margin-bottom:9px; font-weight:700;}
+  .project p.desc{color:var(--text-dim); font-size:14.5px; line-height:1.7; margin-bottom:16px;}
+  .stack{display:flex; gap:8px; flex-wrap:wrap;}
+  .stack span{font-family:var(--mono); font-size:10.5px; background:var(--bg); border:1px solid var(--border); padding:5px 11px; border-radius:5px; color:var(--text-dim);}
+
+  .spotlight{position:relative; border:1px solid var(--accent-dim); border-radius:14px; padding:44px; background:linear-gradient(160deg, rgba(95,179,255,0.07), var(--surface) 60%); overflow:hidden;}
+  .spotlight-tag{display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:11.5px; letter-spacing:1px; color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-dim); padding:7px 14px; border-radius:20px; margin-bottom:20px; text-transform:uppercase;}
+  .spotlight-tag .pulse{width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent); animation:blink 2s infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .spotlight h3{font-size:clamp(1.5rem,3.2vw,2.1rem); font-weight:800; letter-spacing:-0.6px; margin-bottom:14px; position:relative; z-index:1;}
+  .spotlight > p.lede{color:var(--text-dim); font-size:15px; line-height:1.8; max-width:640px; margin-bottom:30px; position:relative; z-index:1;}
+  .spotlight-products{display:grid; grid-template-columns:1fr 1fr; gap:18px; position:relative; z-index:1; margin-bottom:28px;}
+  @media (max-width:700px){.spotlight-products{grid-template-columns:1fr;}}
+  .product-card{background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:10px; padding:20px; transition:border-color .3s, transform .3s;}
+  .product-card:hover{border-color:var(--accent-dim); transform:translateY(-3px);}
+  .product-card .plat{font-family:var(--mono); font-size:10.5px; letter-spacing:1px; color:var(--text-faint); text-transform:uppercase; margin-bottom:7px;}
+  .product-card h4{font-size:16.5px; font-weight:700; margin-bottom:6px;}
+  .product-card p{font-size:13px; color:var(--text-dim); line-height:1.55;}
+  .bae-strip{position:relative; z-index:1; display:flex; align-items:center; gap:16px; flex-wrap:wrap; border-top:1px solid var(--border-soft); padding-top:24px;}
+  .bae-chip{font-family:var(--display); font-weight:800; font-size:14px; color:var(--bg); background:var(--accent); padding:8px 16px; border-radius:6px; letter-spacing:0.5px;}
+  .bae-strip p{font-size:13.5px; color:var(--text-dim); line-height:1.6; max-width:520px;}
+  .bae-strip p b{color:var(--text); font-weight:600;}
+
+  .badge-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:26px;}
+  .badge{font-family:var(--mono); font-size:11.5px; padding:8px 16px; border:1px solid var(--border); border-radius:20px; color:var(--text-dim); transition:all .25s;}
+  .badge:hover{color:var(--accent); border-color:var(--accent-dim); background:var(--accent-soft);}
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:820px){.twocol{grid-template-columns:1fr;}}
+  .plain-card{border:1px solid var(--border); border-radius:10px; padding:26px; background:var(--surface);}
+  .plain-card h3{font-family:var(--mono); font-size:12.5px; text-transform:uppercase; letter-spacing:1px; color:var(--accent); margin-bottom:14px; font-weight:500;}
+  .plain-card p{color:var(--text-dim); font-size:14.5px; line-height:1.75;}
+
+  .edu-cert-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px;}
+  @media (max-width:860px){.edu-cert-grid{grid-template-columns:1fr;}}
+  .edu-item{border-left:2px solid var(--border); padding-left:20px; margin-bottom:24px; position:relative;}
+  .edu-item::before{content:''; position:absolute; left:-6px; top:4px; width:10px; height:10px; border-radius:50%; background:var(--bg); border:2px solid var(--accent);}
+  .edu-item .yr{font-family:var(--mono); font-size:11.5px; color:var(--accent);}
+  .edu-item h4{font-size:15.5px; margin:6px 0 4px; font-weight:700;}
+  .edu-item p{color:var(--text-dim); font-size:13.5px;}
+  .cert-list{list-style:none;}
+  .cert-list li{font-size:14px; color:var(--text-dim); padding:11px 0; border-bottom:1px solid var(--border-soft); display:flex; gap:10px; align-items:baseline;}
+  .cert-list li::before{content:'✓'; color:var(--accent); font-family:var(--mono); font-size:12px;}
+
+  .contact-sec{text-align:center; padding-bottom:100px;}
+  .contact-sec h2{font-size:clamp(2rem,4.6vw,3.1rem); margin-bottom:16px; font-weight:800; letter-spacing:-1px;}
+  .contact-sec p{color:var(--text-dim); font-size:16px; max-width:460px; margin:0 auto 34px; line-height:1.7;}
+  .contact-links{display:flex; gap:16px; justify-content:center; flex-wrap:wrap;}
+
+  footer{border-top:1px solid var(--border-soft); padding:28px 6vw; display:flex; justify-content:space-between; font-family:var(--mono); font-size:11.5px; color:var(--text-faint); flex-wrap:wrap; gap:10px; position:relative; z-index:1;}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<div class="aurora"></div>
+
+<nav>
+  <div class="logo">NIDHISH <span>GUHAN</span></div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#bizprime">BizPrime</a>
+    <a href="#education">Education</a>
+  </div>
+  <a href="#contact" class="nav-cta">Contact</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="section-inner hero-inner">
+    <div class="eyebrow">Software Developer</div>
+    <h1>Turning code and data<br>into <span class="accent">real products.</span></h1>
+    <p class="lead">Computer Science & Engineering student building <b>ML-powered software</b> and <b>enterprise automation</b>, with an analytical, data-driven mindset.</p>
+
+    <div class="hero-meta">
+      <div><span class="n">3rd Yr</span><span class="l">B.E. CSE</span></div>
+      <div><span class="n">3</span><span class="l">PROJECTS</span></div>
+      <div><span class="n">6</span><span class="l">CERTIFICATIONS</span></div>
+    </div>
+
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+  <div class="scroll-cue"><div class="line"></div>SCROLL</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner reveal">
+    <div class="sec-head"><h2>About</h2><span class="sec-num">01 / Profile</span></div>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a <b>Computer Science & Engineering student</b> at Kumaraguru College of Technology with a strong interest in building intelligent software and automating real business workflows. My project work spans machine learning, robotic process automation, and data analytics.</p>
+        <p>I also bring a founder's mindset — currently building my own startup, BizPrime, alongside my academic and technical work.</p>
+      </div>
+      <ul class="fact-list">
+        <li><span>Location</span><span>Tamil Nadu, India</span></li>
+        <li><span>Degree</span><span>B.E. Computer Science & Engineering</span></li>
+        <li><span>Institution</span><span>Kumaraguru College of Technology</span></li>
+        <li><span>Focus Areas</span><span>ML, Automation, Data Analytics</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner reveal">
+    <div class="sec-head"><h2>Technical Skills</h2><span class="sec-num">02 / Stack</span></div>
+    <div class="skill-cols">
+      <div class="skill-card">
+        <h3>Languages</h3>
+        <ul><li>Java</li><li>C / C++</li><li>Python</li><li>JavaScript</li><li>SQL</li><li>HTML / CSS</li></ul>
+      </div>
+      <div class="skill-card">
+        <h3>Web & Mobile Development</h3>
+        <ul><li>Full-Stack Web Development</li><li>React.js</li><li>Node.js</li><li>Mobile App Development</li><li>REST APIs</li></ul>
+      </div>
+      <div class="skill-card">
+        <h3>ML / AI & Libraries</h3>
+        <ul><li>TensorFlow (Basics)</li><li>OpenCV (Basics)</li><li>NumPy</li><li>Pandas</li></ul>
+      </div>
+      <div class="skill-card">
+        <h3>Tools & Automation</h3>
+        <ul><li>UiPath RPA</li><li>MySQL & pgAdmin4</li><li>Git & GitHub</li><li>VS Code</li><li>Raspberry Pi</li></ul>
+      </div>
+      <div class="skill-card">
+        <h3>Animation, Motion & Design</h3>
+        <ul><li>Three.js / WebGL</li><li>CSS & UI Motion Design</li><li>Figma</li></ul>
+      </div>
+      <div class="skill-card">
+        <h3>Video Editing</h3>
+        <ul><li>Adobe Premiere Pro</li><li>Adobe After Effects</li><li>Video Editing & Post-Production</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner reveal">
+    <div class="sec-head"><h2>Projects</h2><span class="sec-num">03 / Selected Work</span></div>
+
+    <div class="project">
+      <div class="pnum">01</div>
+      <div>
+        <h3>Tree Leaf Health Analyser</h3>
+        <p class="desc">An ML-powered plant diagnostics tool that identifies leaf species and detects health condition in real time using image classification and computer vision.</p>
+        <div class="stack"><span>Python</span><span>Google Colab</span><span>CNN</span></div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="pnum">02</div>
+      <div>
+        <h3>Automated Payroll System for IT Companies</h3>
+        <p class="desc">An end-to-end payroll automation platform generating bills, payslips, and reports — combining ML-based anomaly detection with UiPath RPA workflow automation.</p>
+        <div class="stack"><span>Python</span><span>UiPath RPA</span><span>Machine Learning</span><span>MySQL</span></div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="pnum">03</div>
+      <div>
+        <h3>EV Battery Health Management System</h3>
+        <p class="desc">A monitoring and analytics system tracking EV battery health metrics in real time to flag degradation and recommend maintenance.</p>
+        <div class="stack"><span>Python</span><span>NumPy</span><span>Pandas</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BIZPRIME SPOTLIGHT -->
+<section id="bizprime">
+  <div class="section-inner reveal">
+    <div class="sec-head"><h2>Founder Venture</h2><span class="sec-num">04 / BizPrime</span></div>
+    <div class="spotlight">
+      <div class="spotlight-tag"><span class="pulse"></span>Founder & Inventor</div>
+      <h3>Building BizPrime — a business platform for mobile and desktop.</h3>
+      <p class="lede">BizPrime is my own startup venture: a business management platform built across two products, one for mobile and one for desktop.</p>
+      <div class="spotlight-products">
+        <div class="product-card">
+          <div class="plat">Mobile</div>
+          <h4>BizPrime Flow</h4>
+          <p>The mobile experience of BizPrime — built for managing business on the go.</p>
+        </div>
+        <div class="product-card">
+          <div class="plat">Desktop</div>
+          <h4>BizPrime Business OS</h4>
+          <p>The desktop counterpart — a full operating environment for running a business.</p>
+        </div>
+      </div>
+      <div class="bae-strip">
+        <span class="bae-chip">BAE</span>
+        <p>Alongside BizPrime, I've developed <b>BAE</b> — a new technology of my own invention, powering the vision behind BizPrime's products.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION + CERTS -->
+<section id="education">
+  <div class="section-inner reveal">
+    <div class="sec-head"><h2>Education & Certifications</h2><span class="sec-num">05 / Background</span></div>
+    <div class="edu-cert-grid">
+      <div>
+        <div class="edu-item">
+          <div class="yr">2024 — Present</div>
+          <h4>B.E. — Computer Science & Engineering</h4>
+          <p>Kumaraguru College of Technology, Tamil Nadu · 3rd Year</p>
+        </div>
+        <div class="edu-item">
+          <div class="yr">85.4%</div>
+          <h4>Higher Secondary (12th — CBSE)</h4>
+          <p>Sagar International School, Perundurai</p>
+        </div>
+        <div class="edu-item">
+          <div class="yr">84.2%</div>
+          <h4>Secondary Education (10th — CBSE)</h4>
+          <p>CBSE Board</p>
+        </div>
+      </div>
+      <ul class="cert-list">
+        <li>NumPy and Pandas using Python</li>
+        <li>Beginning Custom Projects with Raspberry Pi</li>
+        <li>Foundation of 3D Modelling</li>
+        <li>Emerging Domain Technologies</li>
+        <li>Disruptive Technology</li>
+        <li>Empowering Education through Assistive Technology</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner contact-sec reveal">
+    <div class="eyebrow" style="justify-content:center;">Get In Touch</div>
+    <h2>Let's work together.</h2>
+    <p>Open to software development roles and internships. I'd love to hear from you.</p>
+    <div class="contact-links">
+      <a href="mailto:nidhish28guhan@gmail.com" class="btn btn-primary">Email Me</a>
+      <a href="tel:+919488955564" class="btn btn-ghost">Call +91 94889 55564</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Nidhish Guhan · Tamil Nadu, India</div>
+  <div>nidhish28guhan@gmail.com</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+  // ---------- scroll reveal ----------
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---------- 3D scroll-scaffolded scene: realistic shaded objects + continuous parallax zoom ----------
+  (function(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canvas = document.getElementById('bg-canvas');
+    if (reduceMotion || typeof THREE === 'undefined') { canvas.style.display = 'none'; return; }
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 9);
+
+    // ---- realistic lighting rig ----
+    const ambient = new THREE.AmbientLight(0x2a3648, 1.1);
+    scene.add(ambient);
+    const key = new THREE.DirectionalLight(0xbfe0ff, 1.6);
+    key.position.set(4, 5, 6);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0x5fb3ff, 1.4);
+    rim.position.set(-5, -2, -4);
+    scene.add(rim);
+    const fill = new THREE.PointLight(0x5fb3ff, 0.9, 20);
+    fill.position.set(0, -3, 5);
+    scene.add(fill);
+
+    const ACCENT = 0x5fb3ff;
+    const DARK = 0x0e131c;
+    const METAL = 0x8a95a6;
+    const rightX = window.innerWidth < 860 ? 0 : 2.7;
+
+    function bodyMat(color, rough, metal){ return new THREE.MeshStandardMaterial({ color, roughness: rough, metalness: metal }); }
+    function glowMat(color, intensity){ return new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: intensity, roughness: 0.35, metalness: 0.1 }); }
+    function glassMat(){ return new THREE.MeshStandardMaterial({ color: 0x0b2233, roughness: 0.15, metalness: 0.3, emissive: ACCENT, emissiveIntensity: 0.12 }); }
+
+    function fadeGroup(group, factor){
+      group.traverse(o => { if (o.material){ (o.__baseOpacity ??= (o.material.opacity ?? 1)); o.material.transparent = true; o.material.opacity = o.__baseOpacity * factor; } });
+    }
+
+    // ============ OBJECT 1 — HERO: stylized neural "brain" ============
+    const heroGroup = new THREE.Group();
+    const brainGeo = new THREE.IcosahedronGeometry(1.7, 3);
+    const posAttr = brainGeo.attributes.position;
+    for (let i = 0; i < posAttr.count; i++){
+      const x = posAttr.getX(i), y = posAttr.getY(i), z = posAttr.getZ(i);
+      const fold = Math.sin(x * 4.6) * Math.cos(y * 4.1) * Math.sin(z * 3.9) * 0.15
+                 + Math.sin(x * 8.5 + y * 6.2) * 0.05;
+      const scale = 1 + fold;
+      posAttr.setXYZ(i, x * scale, y * scale, z * scale);
+    }
+    brainGeo.computeVertexNormals();
+    const brainMat = new THREE.MeshStandardMaterial({ color: 0xb98a95, roughness: 0.55, metalness: 0.12, emissive: ACCENT, emissiveIntensity: 0.05, flatShading: false });
+    const brainMesh = new THREE.Mesh(brainGeo, brainMat);
+    brainMesh.scale.set(1.18, 0.92, 1.05);
+    heroGroup.add(brainMesh);
+
+    // central fissure line
+    const fissureCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, 1.55, 0.55), new THREE.Vector3(0, 0.7, 0.95),
+      new THREE.Vector3(0, -0.2, 1.0), new THREE.Vector3(0, -1.1, 0.7)
+    ]);
+    const fissure = new THREE.Mesh(new THREE.TubeGeometry(fissureCurve, 24, 0.025, 8, false), new THREE.MeshStandardMaterial({ color: 0x2a1418, roughness: 0.8 }));
+    heroGroup.add(fissure);
+
+    // neural synapse points scattered across the surface + connecting pulses
+    const synCount = 46;
+    const synGeo = new THREE.BufferGeometry();
+    const synPos = new Float32Array(synCount * 3);
+    const synPts = [];
+    for (let i = 0; i < synCount; i++){
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos((Math.random() * 2) - 1);
+      const r = 1.85 + Math.random() * 0.15;
+      const v = new THREE.Vector3(
+        r * Math.sin(phi) * Math.cos(theta) * 1.18,
+        r * Math.sin(phi) * Math.sin(theta) * 0.92,
+        r * Math.cos(phi) * 1.05
+      );
+      synPts.push(v);
+      synPos.set([v.x, v.y, v.z], i * 3);
+    }
+    synGeo.setAttribute('position', new THREE.BufferAttribute(synPos, 3));
+    const synapses = new THREE.Points(synGeo, new THREE.PointsMaterial({ color: ACCENT, size: 0.045, transparent: true, opacity: 0.85 }));
+    heroGroup.add(synapses);
+
+    const lineVerts = [];
+    for (let i = 0; i < synPts.length; i++){
+      const a = synPts[i];
+      let nearest = null, nd = Infinity;
+      for (let j = 0; j < synPts.length; j++){
+        if (i === j) continue;
+        const d = a.distanceTo(synPts[j]);
+        if (d < nd){ nd = d; nearest = synPts[j]; }
+      }
+      if (nearest && nd < 1.1){ lineVerts.push(a.x, a.y, a.z, nearest.x, nearest.y, nearest.z); }
+    }
+    const lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(lineVerts), 3));
+    const neuralLines = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.28 }));
+    heroGroup.add(neuralLines);
+
+    const ringGeo = new THREE.TorusGeometry(2.7, 0.02, 8, 64);
+    const ring1 = new THREE.Mesh(ringGeo, glowMat(ACCENT, 0.8));
+    ring1.rotation.x = Math.PI / 2.3;
+    const ring2 = ring1.clone(); ring2.rotation.x = Math.PI / 1.6; ring2.rotation.y = 0.6;
+    heroGroup.add(ring1, ring2);
+    heroGroup.position.x = rightX;
+    scene.add(heroGroup);
+
+    // ============ OBJECT 2 — SKILLS: realistic microchip (PCB body + gold pins + die) ============
+    const chipGroup = new THREE.Group();
+    const chipBody = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.16, 1.8), bodyMat(0x14181f, 0.5, 0.3));
+    chipGroup.add(chipBody);
+    const chipDie = new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.08, 0.85), glassMat());
+    chipDie.position.y = 0.12;
+    chipGroup.add(chipDie);
+    const chipLabel = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.02, 0.5), glowMat(ACCENT, 0.9));
+    chipLabel.position.y = 0.17;
+    chipGroup.add(chipLabel);
+    const pinMat = bodyMat(0xd7b46a, 0.35, 0.9);
+    const pinGeo = new THREE.BoxGeometry(0.5, 0.04, 0.06);
+    for (let side = 0; side < 4; side++){
+      for (let i = -3; i <= 3; i++){
+        const pin = new THREE.Mesh(pinGeo, pinMat);
+        const offset = i * 0.22;
+        if (side === 0){ pin.position.set(offset, -0.02, 1.0); }
+        else if (side === 1){ pin.position.set(offset, -0.02, -1.0); }
+        else if (side === 2){ pin.rotation.y = Math.PI/2; pin.position.set(1.0, -0.02, offset); }
+        else { pin.rotation.y = Math.PI/2; pin.position.set(-1.0, -0.02, offset); }
+        chipGroup.add(pin);
+      }
+    }
+    chipGroup.position.set(rightX, 0, 0);
+    chipGroup.visible = false;
+    scene.add(chipGroup);
+
+    // ============ OBJECT 3 — PROJECTS: realistic laptop (shaded, hinged screen) ============
+    const laptopGroup = new THREE.Group();
+    const laptopMetal = bodyMat(0xc7ccd4, 0.35, 0.75);
+    const laptopBase = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.1, 1.55), laptopMetal);
+    laptopBase.position.y = -0.62;
+    laptopGroup.add(laptopBase);
+    const keyboard = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.02, 1.2), bodyMat(0x1b2028, 0.6, 0.2));
+    keyboard.position.set(0, -0.565, 0.02);
+    laptopGroup.add(keyboard);
+    const trackpad = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.015, 0.42), bodyMat(0x2a313d, 0.4, 0.3));
+    trackpad.position.set(0, -0.56, 0.62);
+    laptopGroup.add(trackpad);
+    const screenPivot = new THREE.Group();
+    screenPivot.position.set(0, -0.62, -0.77);
+    const laptopScreen = new THREE.Mesh(new THREE.BoxGeometry(2.3, 1.45, 0.05), laptopMetal);
+    laptopScreen.position.set(0, 0.72, 0);
+    const screenGlow = new THREE.Mesh(new THREE.PlaneGeometry(2.05, 1.2), glowMat(ACCENT, 0.35));
+    screenGlow.position.set(0, 0.72, 0.03);
+    screenPivot.add(laptopScreen, screenGlow);
+    laptopGroup.add(screenPivot);
+    laptopGroup.position.set(rightX, 0, 0);
+    laptopGroup.visible = false;
+    scene.add(laptopGroup);
+
+    // ============ OBJECT 4 — BIZPRIME: phone + monitor duo, glass screens ============
+    const bizGroup = new THREE.Group();
+    const deviceBody = bodyMat(0x181d26, 0.4, 0.7);
+    const phone = new THREE.Mesh(new THREE.BoxGeometry(0.72, 1.45, 0.09), deviceBody);
+    phone.position.set(-0.95, 0, 0.3);
+    const phoneScreen = new THREE.Mesh(new THREE.PlaneGeometry(0.6, 1.2), glowMat(ACCENT, 0.4));
+    phoneScreen.position.set(-0.95, 0, 0.355);
+    const monitor = new THREE.Mesh(new THREE.BoxGeometry(1.75, 1.12, 0.08), deviceBody);
+    monitor.position.set(0.95, 0.2, -0.3);
+    const monitorScreen = new THREE.Mesh(new THREE.PlaneGeometry(1.55, 0.92), glowMat(ACCENT, 0.4));
+    monitorScreen.position.set(0.95, 0.2, -0.255);
+    const monitorStand = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.08, 0.42, 12), bodyMat(METAL, 0.4, 0.8));
+    monitorStand.position.set(0.95, -0.57, -0.3);
+    const monitorBase = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.03, 20), bodyMat(METAL, 0.4, 0.8));
+    monitorBase.position.set(0.95, -0.78, -0.3);
+    bizGroup.add(phone, phoneScreen, monitor, monitorScreen, monitorStand, monitorBase);
+    bizGroup.position.set(rightX, 0, 0);
+    bizGroup.visible = false;
+    scene.add(bizGroup);
+
+    // ============ OBJECT 5 — CONTACT: realistic headphone, 180° rotate + fly-through gap ============
+    const hpGroup = new THREE.Group();
+    const bandCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-1.55, -0.15, 0), new THREE.Vector3(-1.35, 0.85, 0.05),
+      new THREE.Vector3(-0.7, 1.45, 0.08), new THREE.Vector3(0, 1.62, 0.1),
+      new THREE.Vector3(0.7, 1.45, 0.08), new THREE.Vector3(1.35, 0.85, 0.05),
+      new THREE.Vector3(1.55, -0.15, 0)
+    ]);
+    const band = new THREE.Mesh(new THREE.TubeGeometry(bandCurve, 64, 0.085, 16, false), bodyMat(0x1c2029, 0.28, 0.75));
+    hpGroup.add(band);
+    const padCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(-0.9, 1.32, 0.09), new THREE.Vector3(-0.45, 1.58, 0.11),
+      new THREE.Vector3(0, 1.7, 0.12), new THREE.Vector3(0.45, 1.58, 0.11), new THREE.Vector3(0.9, 1.32, 0.09)
+    ]);
+    hpGroup.add(new THREE.Mesh(new THREE.TubeGeometry(padCurve, 32, 0.1, 12, false), bodyMat(0x0d0f13, 0.75, 0.05)));
+    const yokeMat = bodyMat(0xb9c1cc, 0.25, 0.9);
+    function makeYoke(sign){
+      const yoke = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.55, 16), yokeMat);
+      yoke.position.set(sign * 1.55, -0.4, 0);
+      return yoke;
+    }
+    hpGroup.add(makeYoke(-1), makeYoke(1));
+    function makeCup(sign){
+      const cup = new THREE.Group();
+      const shell = new THREE.Mesh(new THREE.CylinderGeometry(0.62, 0.56, 0.42, 32), bodyMat(0x14171e, 0.32, 0.55));
+      shell.rotation.z = Math.PI / 2;
+      cup.add(shell);
+      const trim = new THREE.Mesh(new THREE.TorusGeometry(0.62, 0.025, 12, 40), glowMat(ACCENT, 0.55));
+      trim.rotation.y = Math.PI / 2; trim.position.x = 0.19 * sign;
+      cup.add(trim);
+      const cushion = new THREE.Mesh(new THREE.TorusGeometry(0.5, 0.14, 16, 32), bodyMat(0x0a0b0e, 0.85, 0.05));
+      cushion.rotation.y = Math.PI / 2; cushion.position.x = 0.23 * sign;
+      cup.add(cushion);
+      const grille = new THREE.Mesh(new THREE.CircleGeometry(0.36, 32), bodyMat(0x1f242e, 0.4, 0.6));
+      grille.rotation.y = Math.PI / 2 + Math.PI; grille.position.x = -0.19 * sign;
+      cup.add(grille);
+      const logo = new THREE.Mesh(new THREE.CircleGeometry(0.07, 24), glowMat(ACCENT, 0.9));
+      logo.rotation.y = Math.PI / 2 + Math.PI; logo.position.x = -0.2 * sign;
+      cup.add(logo);
+      cup.position.set(sign * 1.55, -0.7, 0);
+      return cup;
+    }
+    const hpCupL = makeCup(-1);
+    const hpCupR = makeCup(1);
+    hpGroup.add(hpCupL, hpCupR);
+    hpGroup.scale.setScalar(1.3);
+    hpGroup.position.set(0, 0, 0);
+    hpGroup.visible = false;
+    scene.add(hpGroup);
+
+    const objects = { top: heroGroup, skills: chipGroup, projects: laptopGroup, bizprime: bizGroup, contact: hpGroup };
+    const sectionIds = Object.keys(objects);
+    const sectionEls = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+    let activeId = 'top';
+    let sectionProgress = 0;
+    let globalProgress = 0; // 0-1 across the whole page, drives continuous zoom
+    let targetGlobalProgress = 0;
+
+    function computeScrollState(){
+      const max = document.body.scrollHeight - window.innerHeight;
+      targetGlobalProgress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+
+      const centerY = window.innerHeight * 0.5;
+      let best = null, bestDist = Infinity;
+      sectionEls.forEach(el => {
+        const r = el.getBoundingClientRect();
+        const mid = r.top + r.height / 2;
+        const dist = Math.abs(mid - centerY);
+        if (dist < bestDist){ bestDist = dist; best = el; }
+        el.__progress = Math.min(1, Math.max(0, (centerY - r.top) / r.height));
+      });
+      if (best){ activeId = best.id; sectionProgress = best.__progress; }
+    }
+
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5);
+      mouseY = (e.clientY / window.innerHeight - 0.5);
+    });
+    window.addEventListener('scroll', computeScrollState, { passive: true });
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+    computeScrollState();
+
+    const fadeState = {}; sectionIds.forEach(id => fadeState[id] = id === 'top' ? 1 : 0);
+
+    // base camera zoom curve: dolly smoothly closer, then settle — continuously tied to scroll
+    function zoomForProgress(gp){
+      // gentle non-linear dolly: fast approach early, settle mid, slight pull-back late
+      const dolly = 9 - Math.sin(Math.min(gp, 0.85) / 0.85 * Math.PI * 0.5) * 4.4;
+      return dolly;
+    }
+
+    function animate(t){
+      requestAnimationFrame(animate);
+      const time = t * 0.001;
+
+      // smooth (lerped) global scroll progress -> continuous parallax zoom
+      globalProgress += (targetGlobalProgress - globalProgress) * 0.07;
+      const targetZ = zoomForProgress(globalProgress);
+      camera.position.z += (targetZ - camera.position.z) * 0.08;
+
+      // subtle parallax drift from mouse, smoothed
+      camera.position.x += (mouseX * 0.55 - camera.position.x) * 0.04;
+      camera.position.y += (-mouseY * 0.45 - camera.position.y) * 0.04;
+      camera.lookAt(0, 0, 0);
+
+      // crossfade active object
+      sectionIds.forEach(id => {
+        const target = id === activeId ? 1 : 0;
+        fadeState[id] += (target - fadeState[id]) * 0.06;
+        const group = objects[id];
+        const visible = fadeState[id] > 0.01;
+        group.visible = visible;
+        if (visible) fadeGroup(group, fadeState[id]);
+      });
+
+      const p = sectionProgress;
+
+      // HERO / ABOUT background object
+      heroGroup.rotation.y = p * Math.PI * 1.6 + time * 0.12;
+      heroGroup.rotation.x = p * Math.PI * 0.5 + Math.sin(time * 0.3) * 0.05;
+      ring1.rotation.z = time * 0.25;
+      ring2.rotation.z = -time * 0.18;
+
+      // SKILLS — chip: slow deliberate rotation, subtle hover, pulsing die
+      chipGroup.rotation.y = p * Math.PI * 1.4 + time * 0.2;
+      chipGroup.rotation.x = Math.sin(time * 0.6) * 0.06;
+      chipGroup.position.y = Math.sin(time * 1.1) * 0.1;
+      const pulse = 1 + Math.sin(time * 2.4) * 0.05;
+      chipDie.scale.set(pulse, 1, pulse);
+      chipLabel.material.emissiveIntensity = 0.7 + Math.sin(time * 2.4) * 0.3;
+
+      // PROJECTS — laptop lid opens with scroll
+      screenPivot.rotation.x = -Math.PI / 2 + p * (Math.PI / 2) * 1.1;
+      laptopGroup.rotation.y = -0.35 + p * 0.7;
+      laptopGroup.position.y = -0.05 + p * 0.12;
+      screenGlow.material.emissiveIntensity = 0.15 + p * 0.4;
+
+      // BIZPRIME — mobile & desktop float independently
+      bizGroup.rotation.y = Math.sin(p * Math.PI) * 0.4;
+      phone.position.y = Math.sin(time * 1.4) * 0.1;
+      phoneScreen.position.y = phone.position.y;
+      monitor.position.y = 0.2 + Math.cos(time * 1.1) * 0.08;
+      monitorScreen.position.y = monitor.position.y;
+
+      // CONTACT — headphone rotates 180°, then its ear cups swing open and the
+      // camera flies through the gap between them, Hollywood-transition style
+      const rotPhase = Math.min(1, p / 0.55);
+      hpGroup.rotation.y = rotPhase * Math.PI; // 180 degrees
+      hpGroup.rotation.x = Math.sin(rotPhase * Math.PI) * 0.08;
+
+      const gapPhase = Math.max(0, Math.min(1, (p - 0.45) / 0.55));
+      const gapEase = gapPhase * gapPhase * (3 - 2 * gapPhase); // smoothstep
+      hpCupL.position.x = -1.55 - gapEase * 2.6;
+      hpCupR.position.x = 1.55 + gapEase * 2.6;
+      hpGroup.scale.setScalar(1.3 + gapEase * 2.6);
+      hpGroup.position.z = gapEase * 3.2;
+
+      if (activeId === 'contact'){
+        camera.position.z -= gapEase * 3.4; // fly through the gap
+      }
+
+      const hpFade = 1 - Math.max(0, (gapPhase - 0.75) / 0.25);
+      hpGroup.visible = fadeState.contact > 0.01 && hpFade > 0.01;
+      if (hpGroup.visible) fadeGroup(hpGroup, fadeState.contact * hpFade);
+
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(animate);
+  })();
+
+</script>
+
+</body>
+</html>
