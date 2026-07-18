@@ -42,26 +42,9 @@
   }
   @keyframes driftSlow{from{transform:translate(-55%,-4%) scale(1);}to{transform:translate(-45%,4%) scale(1.08);}}
 
-  nav{
-    position:fixed; top:0; left:0; right:0; z-index:100;
-    display:flex; align-items:center; justify-content:space-between;
-    padding:22px 6vw;
-    background:rgba(11,13,18,0.72); backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--border-soft);
-  }
-  .logo{font-family:var(--display); font-weight:700; font-size:16px;}
-  .logo span{color:var(--accent);}
-  .nav-links{display:flex; gap:38px; font-size:13.5px; color:var(--text-dim); font-weight:500;}
-  .nav-links a{position:relative; padding:4px 0; transition:color .25s;}
-  .nav-links a:hover{color:var(--text);}
-  .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s; border-radius:2px;}
-  .nav-links a:hover::after{width:100%;}
   a:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px;}
-  .nav-cta{font-family:var(--body); font-weight:600; font-size:13px; padding:10px 20px; border-radius:6px; border:1px solid var(--border); color:var(--text); transition:all .25s;}
-  .nav-cta:hover{border-color:var(--accent); color:var(--accent); background:var(--accent-soft);}
-  @media (max-width:860px){ .nav-links{display:none;} }
 
-  section{position:relative; z-index:1; padding:130px 6vw 60px;}
+  section{position:relative; z-index:1; padding:80px 6vw 60px;}
   .section-inner{max-width:1160px; margin:0 auto;}
 
   .eyebrow{
@@ -73,35 +56,77 @@
   h1,h2,h3{font-family:var(--display);}
 
 
-  .hero{min-height:96vh; display:flex; flex-direction:column; justify-content:center; padding-top:160px;}
+  /* ---------- cinematic hero: 3D name -> video -> software-developer content ---------- */
+  .hero-cinematic{height:340vh; position:relative; padding:0;}
+  .hero-pin{
+    position:sticky; top:0; height:100vh; width:100%; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at 50% 45%, rgba(20,26,36,0.35), var(--bg) 78%);
+  }
+  #hero-name-canvas{position:absolute; inset:0; width:100%; height:100%; z-index:1;}
+  .hero-video{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    z-index:2; opacity:0; pointer-events:none; background:#000;
+  }
+  .hero-content{
+    position:relative; z-index:3; width:100%; padding:0 6vw;
+    opacity:0; transform:translateY(20px); pointer-events:none;
+  }
   .hero-inner{max-width:780px;}
-  .hero h1{
+  .hero-content h1{
     font-size:clamp(2.6rem,5.6vw,4.2rem); line-height:1.08; font-weight:800; letter-spacing:-1.4px;
-    opacity:0; transform:translateY(22px); animation:rise .9s cubic-bezier(.16,1,.3,1) forwards; animation-delay:.1s;
   }
-  .hero h1 .accent{color:var(--accent);}
-  .hero p.lead{
+  .hero-content h1 .accent{color:var(--accent);}
+  .hero-content p.lead{
     font-size:17px; color:var(--text-dim); line-height:1.75; max-width:580px; margin-top:26px;
-    opacity:0; transform:translateY(20px); animation:rise .9s cubic-bezier(.16,1,.3,1) forwards; animation-delay:.28s;
   }
-  .hero p.lead b{color:var(--text); font-weight:600;}
-  @keyframes rise{to{opacity:1; transform:translateY(0);}}
+  .hero-content p.lead b{color:var(--text); font-weight:600;}
 
-  .hero-meta{display:flex; gap:34px; margin-top:40px; flex-wrap:wrap; opacity:0; transform:translateY(20px); animation:rise .9s cubic-bezier(.16,1,.3,1) forwards; animation-delay:.46s;}
+  .hero-meta{display:flex; gap:34px; margin-top:40px; flex-wrap:wrap;}
   .hero-meta div{display:flex; flex-direction:column; gap:4px;}
   .hero-meta .n{font-family:var(--display); font-size:1.7rem; font-weight:700; color:var(--accent);}
   .hero-meta .l{font-size:11.5px; color:var(--text-faint); font-family:var(--mono); letter-spacing:0.5px;}
 
-  .hero-cta{margin-top:42px; display:flex; gap:16px; flex-wrap:wrap; opacity:0; transform:translateY(20px); animation:rise .9s cubic-bezier(.16,1,.3,1) forwards; animation-delay:.62s;}
+  .hero-cta{margin-top:42px; display:flex; gap:16px; flex-wrap:wrap;}
   .btn{font-family:var(--body); font-size:14px; font-weight:600; padding:14px 28px; border-radius:7px; display:inline-flex; align-items:center; gap:8px; transition:all .25s ease; border:1px solid transparent; cursor:pointer;}
   .btn-primary{background:var(--accent); color:#071523;}
   .btn-primary:hover{background:#7cc0ff; transform:translateY(-2px); box-shadow:0 14px 34px -10px rgba(95,179,255,0.45);}
   .btn-ghost{border-color:var(--border); color:var(--text);}
   .btn-ghost:hover{border-color:var(--accent); color:var(--accent); transform:translateY(-2px);}
 
-  .scroll-cue{position:absolute; bottom:34px; left:6vw; font-family:var(--mono); font-size:10.5px; color:var(--text-faint); display:flex; align-items:center; gap:10px; letter-spacing:1px; z-index:2; transition:opacity .4s;}
+  .scroll-cue{position:absolute; bottom:34px; left:6vw; font-family:var(--mono); font-size:10.5px; color:var(--text-faint); display:flex; align-items:center; gap:10px; letter-spacing:1px; z-index:4; transition:opacity .4s;}
   .scroll-cue .line{width:1px; height:28px; background:linear-gradient(var(--text-faint), transparent); animation:cuepulse 2.2s infinite;}
   @keyframes cuepulse{0%,100%{opacity:.25}50%{opacity:.9}}
+
+  /* ---------- progress bar ---------- */
+  .progress-bar{
+    position:fixed; top:0; left:0; height:2.5px; width:0%; z-index:200;
+    background:linear-gradient(90deg, var(--accent-dim), var(--accent));
+    box-shadow:0 0 12px rgba(95,179,255,0.5);
+    transition:width .08s linear;
+  }
+
+  /* ---------- floating section navigator ---------- */
+  .dot-nav{
+    position:fixed; right:26px; top:50%; transform:translateY(-50%); z-index:150;
+    display:flex; flex-direction:column; gap:16px; align-items:flex-end;
+  }
+  .dot-nav a{
+    display:flex; align-items:center; gap:10px; position:relative;
+  }
+  .dot-nav a span{
+    width:7px; height:7px; border-radius:50%; background:var(--border);
+    border:1px solid var(--border); transition:all .3s ease; flex-shrink:0;
+  }
+  .dot-nav a em{
+    font-style:normal; font-family:var(--mono); font-size:10.5px; letter-spacing:0.5px; color:var(--text-faint);
+    opacity:0; transform:translateX(6px); transition:all .25s ease; white-space:nowrap; pointer-events:none;
+  }
+  .dot-nav a:hover em{opacity:1; transform:translateX(0); color:var(--text);}
+  .dot-nav a:hover span{background:var(--accent-soft); border-color:var(--accent);}
+  .dot-nav a.active span{background:var(--accent); border-color:var(--accent); box-shadow:0 0 10px rgba(95,179,255,0.6); transform:scale(1.3);}
+  .dot-nav a.active em{opacity:1; color:var(--accent);}
+  @media (max-width:860px){ .dot-nav{display:none;} }
 
   .reveal{opacity:0; transform:translateY(26px); transition:opacity .75s cubic-bezier(.16,1,.3,1), transform .75s cubic-bezier(.16,1,.3,1);}
   .reveal.visible{opacity:1; transform:translateY(0);}
@@ -159,6 +184,22 @@
   .bae-strip p{font-size:13.5px; color:var(--text-dim); line-height:1.6; max-width:520px;}
   .bae-strip p b{color:var(--text); font-weight:600;}
 
+  .bae-box{
+    position:relative; z-index:1; border-top:1px solid var(--border-soft); padding-top:26px;
+    background:rgba(95,179,255,0.045); border:1px solid var(--accent-dim); border-radius:10px; padding:26px 26px 22px; margin-top:4px;
+  }
+  .bae-box-head{display:flex; align-items:center; gap:14px; margin-bottom:14px;}
+  .bae-box-head h4{font-size:18px; font-weight:700; letter-spacing:-0.3px;}
+  .bae-box > p{font-size:14.5px; color:var(--text-dim); line-height:1.8; max-width:680px; margin-bottom:22px;}
+  .bae-box > p b{color:var(--text); font-weight:600;}
+  .bae-features{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media (max-width:760px){ .bae-features{grid-template-columns:1fr;} }
+  .bae-feature{
+    font-size:13px; color:var(--text-dim); line-height:1.55; background:rgba(255,255,255,0.02);
+    border:1px solid var(--border-soft); border-radius:8px; padding:14px 16px;
+  }
+  .bf-num{display:block; font-family:var(--mono); font-size:11px; color:var(--accent); margin-bottom:6px; letter-spacing:1px;}
+
   .badge-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:26px;}
   .badge{font-family:var(--mono); font-size:11.5px; padding:8px 16px; border:1px solid var(--border); border-radius:20px; color:var(--text-dim); transition:all .25s;}
   .badge:hover{color:var(--accent); border-color:var(--accent-dim); background:var(--accent-soft);}
@@ -190,39 +231,49 @@
 <body>
 
 <canvas id="bg-canvas"></canvas>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="dot-nav" id="dotNav" aria-label="Section navigation">
+  <a href="#top" data-target="top"><span></span><em>Home</em></a>
+  <a href="#about" data-target="about"><span></span><em>About</em></a>
+  <a href="#skills" data-target="skills"><span></span><em>Skills</em></a>
+  <a href="#projects" data-target="projects"><span></span><em>Projects</em></a>
+  <a href="#bizprime" data-target="bizprime"><span></span><em>BizPrime</em></a>
+  <a href="#education" data-target="education"><span></span><em>Education</em></a>
+  <a href="#contact" data-target="contact"><span></span><em>Contact</em></a>
+</nav>
 <div class="aurora"></div>
 
-<nav>
-  <div class="logo">NIDHISH <span>GUHAN</span></div>
-  <div class="nav-links">
-    <a href="#about">About</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#bizprime">BizPrime</a>
-    <a href="#education">Education</a>
-  </div>
-  <a href="#contact" class="nav-cta">Contact</a>
-</nav>
+<!-- HERO — cinematic: 3D name fills the screen, camera dives through the H–G gap, -->
+<!-- reveals a video slot, then fades into the software-developer intro -->
+<section class="hero-cinematic" id="top">
+  <div class="hero-pin">
+    <canvas id="hero-name-canvas"></canvas>
 
-<!-- HERO -->
-<section class="hero" id="top">
-  <div class="section-inner hero-inner">
-    <div class="eyebrow">Software Developer</div>
-    <h1>Turning code and data<br>into <span class="accent">real products.</span></h1>
-    <p class="lead">Computer Science & Engineering student building <b>ML-powered software</b> and <b>enterprise automation</b>, with an analytical, data-driven mindset.</p>
+    <video id="heroVideo" class="hero-video" muted loop playsinline preload="auto" poster="assets/video/hero-video-poster.jpg">
+      <source src="assets/video/hero-video.webm" type="video/webm">
+      <source src="assets/video/hero-video.mp4" type="video/mp4">
+    </video>
 
-    <div class="hero-meta">
-      <div><span class="n">3rd Yr</span><span class="l">B.E. CSE</span></div>
-      <div><span class="n">3</span><span class="l">PROJECTS</span></div>
-      <div><span class="n">6</span><span class="l">CERTIFICATIONS</span></div>
+    <div class="hero-content" id="heroContent">
+      <div class="section-inner hero-inner">
+        <div class="eyebrow">Software Developer</div>
+        <h1>Turning code and data<br>into <span class="accent">real products.</span></h1>
+        <p class="lead">Computer Science & Engineering student building <b>ML-powered software</b> and <b>enterprise automation</b>, with an analytical, data-driven mindset.</p>
+
+        <div class="hero-meta">
+          <div><span class="n">3rd Yr</span><span class="l">B.E. CSE</span></div>
+          <div><span class="n">3</span><span class="l">PROJECTS</span></div>
+          <div><span class="n">6</span><span class="l">CERTIFICATIONS</span></div>
+        </div>
+
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+        </div>
+      </div>
     </div>
 
-    <div class="hero-cta">
-      <a href="#projects" class="btn btn-primary">View Projects</a>
-      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
-    </div>
+    <div class="scroll-cue" id="heroCue"><div class="line"></div>EXPLORE</div>
   </div>
-  <div class="scroll-cue"><div class="line"></div>SCROLL</div>
 </section>
 
 <!-- ABOUT -->
@@ -255,8 +306,16 @@
         <ul><li>Java</li><li>C / C++</li><li>Python</li><li>JavaScript</li><li>SQL</li><li>HTML / CSS</li></ul>
       </div>
       <div class="skill-card">
-        <h3>Web & Mobile Development</h3>
-        <ul><li>Full-Stack Web Development</li><li>React.js</li><li>Node.js</li><li>Mobile App Development</li><li>REST APIs</li></ul>
+        <h3>Full-Stack Web Development</h3>
+        <ul><li>Full-Stack Development</li><li>React.js</li><li>Node.js</li><li>REST APIs</li></ul>
+      </div>
+      <div class="skill-card">
+        <h3>Mobile App Development</h3>
+        <ul><li>React Native</li><li>Flutter</li><li>Expo Go</li><li>Android SDK</li></ul>
+      </div>
+      <div class="skill-card">
+        <h3>Databases & Backend</h3>
+        <ul><li>Supabase</li><li>PostgreSQL</li><li>MySQL</li><li>SQLite3</li><li>pgAdmin4</li></ul>
       </div>
       <div class="skill-card">
         <h3>ML / AI & Libraries</h3>
@@ -264,7 +323,7 @@
       </div>
       <div class="skill-card">
         <h3>Tools & Automation</h3>
-        <ul><li>UiPath RPA</li><li>MySQL & pgAdmin4</li><li>Git & GitHub</li><li>VS Code</li><li>Raspberry Pi</li></ul>
+        <ul><li>UiPath RPA</li><li>Git & GitHub</li><li>VS Code</li><li>Raspberry Pi</li></ul>
       </div>
       <div class="skill-card">
         <h3>Animation, Motion & Design</h3>
@@ -315,11 +374,11 @@
 <!-- BIZPRIME SPOTLIGHT -->
 <section id="bizprime">
   <div class="section-inner reveal">
-    <div class="sec-head"><h2>Founder Venture</h2><span class="sec-num">04 / BizPrime</span></div>
+    <div class="sec-head"><h2>Founder Venture — BizPrime</h2><span class="sec-num">04 / Startup</span></div>
     <div class="spotlight">
-      <div class="spotlight-tag"><span class="pulse"></span>Founder & Inventor</div>
-      <h3>Building BizPrime — a business platform for mobile and desktop.</h3>
-      <p class="lede">BizPrime is my own startup venture: a business management platform built across two products, one for mobile and one for desktop.</p>
+      <div class="spotlight-tag"><span class="pulse"></span>Founder & Inventor — Startup Plan</div>
+      <h3>BizPrime: one platform to run any business, on any device.</h3>
+      <p class="lede">BizPrime is my own startup venture — a complete business management platform I designed and am building from the ground up, spanning two dedicated products: one for mobile, one for desktop.</p>
       <div class="spotlight-products">
         <div class="product-card">
           <div class="plat">Mobile</div>
@@ -332,9 +391,17 @@
           <p>The desktop counterpart — a full operating environment for running a business.</p>
         </div>
       </div>
-      <div class="bae-strip">
-        <span class="bae-chip">BAE</span>
-        <p>Alongside BizPrime, I've developed <b>BAE</b> — a new technology of my own invention, powering the vision behind BizPrime's products.</p>
+      <div class="bae-box">
+        <div class="bae-box-head">
+          <span class="bae-chip">BAE</span>
+          <h4>BizPrime Adaptive Engine</h4>
+        </div>
+        <p>At the core of BizPrime is <b>BAE — the BizPrime Adaptive Engine</b> — a technology of my own invention. BAE runs on a <b>single, unified database</b> shared across both the mobile and desktop products, and is built to <b>adapt to different types of businesses within one piece of software</b> — rather than requiring separate systems for each.</p>
+        <div class="bae-features">
+          <div class="bae-feature"><span class="bf-num">01</span>Single unified database powering both mobile and desktop</div>
+          <div class="bae-feature"><span class="bf-num">02</span>One engine, adaptable across multiple business types</div>
+          <div class="bae-feature"><span class="bf-num">03</span>Consistent data and experience across every platform</div>
+        </div>
       </div>
     </div>
   </div>
@@ -393,13 +460,232 @@
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/FontLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/TextGeometry.js"></script>
 <script>
+  // ---------- safety fallback: if WebGL/Three.js can't run, skip straight to normal content ----------
+  (function(){
+    function hasWebGL(){
+      try{
+        const c = document.createElement('canvas');
+        return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
+      } catch(e){ return false; }
+    }
+    const ok = hasWebGL() && typeof THREE !== 'undefined';
+    if (ok) return; // normal cinematic path handles everything
+
+    // WebGL/Three.js unavailable — collapse the cinematic wrapper to a plain hero, show content immediately
+    const wrap = document.getElementById('top');
+    const content = document.getElementById('heroContent');
+    const canvas = document.getElementById('hero-name-canvas');
+    const video = document.getElementById('heroVideo');
+    const cue = document.getElementById('heroCue');
+    if (wrap) wrap.style.height = 'auto';
+    if (content){
+      content.style.opacity = '1';
+      content.style.transform = 'none';
+      content.style.pointerEvents = 'auto';
+    }
+    if (canvas) canvas.style.display = 'none';
+    if (video) video.style.display = 'none';
+    if (cue) cue.style.display = 'none';
+  })();
+
   // ---------- scroll reveal ----------
   const revealEls = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   revealEls.forEach(el => io.observe(el));
+
+  // ---------- top progress bar + floating section navigator ----------
+  (function(){
+    const progressBar = document.getElementById('progressBar');
+    const dotLinks = Array.from(document.querySelectorAll('.dot-nav a'));
+    const sections = dotLinks.map(a => document.getElementById(a.dataset.target)).filter(Boolean);
+
+    function update(){
+      const max = document.body.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
+      progressBar.style.width = pct + '%';
+
+      const centerY = window.innerHeight * 0.5;
+      let best = null, bestDist = Infinity;
+      sections.forEach(sec => {
+        const r = sec.getBoundingClientRect();
+        const dist = Math.abs(r.top + r.height / 2 - centerY);
+        if (dist < bestDist){ bestDist = dist; best = sec; }
+      });
+      dotLinks.forEach(a => a.classList.toggle('active', best && a.dataset.target === best.id));
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
+
+  // ---------- CINEMATIC HERO: full-width 3D name -> dive through H–G gap -> video -> content ----------
+  (function(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canvas = document.getElementById('hero-name-canvas');
+    const wrap = document.getElementById('top');
+    const video = document.getElementById('heroVideo');
+    const content = document.getElementById('heroContent');
+    const cue = document.getElementById('heroCue');
+    if (!canvas || !wrap || typeof THREE === 'undefined' || typeof THREE.FontLoader === 'undefined' || typeof THREE.TextGeometry === 'undefined'){
+      // 3D text pipeline unavailable — skip straight to the normal hero content instead of staying stuck
+      if (wrap) wrap.style.height = 'auto';
+      if (content){ content.style.opacity = '1'; content.style.transform = 'none'; content.style.pointerEvents = 'auto'; }
+      if (canvas) canvas.style.display = 'none';
+      if (video) video.style.display = 'none';
+      if (cue) cue.style.display = 'none';
+      return;
+    }
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.outputEncoding = THREE.sRGBEncoding;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 200);
+
+    const ambient = new THREE.AmbientLight(0x2a3648, 1.1);
+    scene.add(ambient);
+    const key = new THREE.DirectionalLight(0xd9ecff, 1.9);
+    key.position.set(5, 7, 8);
+    scene.add(key);
+    const rim = new THREE.DirectionalLight(0x5fb3ff, 1.5);
+    rim.position.set(-6, -2, -4);
+    scene.add(rim);
+
+    const ACCENT = 0x5fb3ff;
+    const nameGroup = new THREE.Group();
+    scene.add(nameGroup);
+    let gapCenterX = 0;
+    let introZ = 14; // recalculated once the real text width is known, so it always spans the full screen
+
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 100;
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++){
+      starPos[i * 3] = (Math.random() - 0.5) * 50;
+      starPos[i * 3 + 1] = (Math.random() - 0.3) * 28;
+      starPos[i * 3 + 2] = -12 - Math.random() * 30;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: ACCENT, size: 0.04, transparent: true, opacity: 0.45 }));
+    scene.add(stars);
+
+    // ---- load bold font, build "NIDHISH" and "GUHAN" sized to span the full screen width ----
+    const loader = new THREE.FontLoader();
+    loader.load('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/fonts/helvetiker_bold.typeface.json', (font) => {
+      const mat = new THREE.MeshStandardMaterial({ color: 0xdfe6ee, roughness: 0.3, metalness: 0.55, emissive: ACCENT, emissiveIntensity: 0.08 });
+      const opts = { font, size: 1.6, height: 0.55, curveSegments: 8, bevelEnabled: true, bevelThickness: 0.07, bevelSize: 0.045, bevelSegments: 3 };
+
+      const g1 = new THREE.TextGeometry('NIDHISH', opts);
+      g1.computeBoundingBox();
+      const w1 = g1.boundingBox.max.x - g1.boundingBox.min.x;
+      const g2 = new THREE.TextGeometry('GUHAN', opts);
+      g2.computeBoundingBox();
+      const w2 = g2.boundingBox.max.x - g2.boundingBox.min.x;
+
+      const gap = 0.55; // world-space gap between the two words — this is the "gap between H and G"
+      const totalWidth = w1 + gap + w2;
+
+      const m1 = new THREE.Mesh(g1, mat);
+      m1.position.set(-gap / 2 - w1, -0.75, 0);
+      const m2 = new THREE.Mesh(g2, mat);
+      m2.position.set(gap / 2, -0.75, 0);
+      nameGroup.add(m1, m2);
+      gapCenterX = 0;
+
+      // pick a camera distance so the full name just fills the screen width, accounting for aspect ratio
+      const fovRad = camera.fov * Math.PI / 180;
+      const targetHalfWidth = totalWidth / 2 * 1.08; // small margin so it isn't flush against the edges
+      introZ = targetHalfWidth / (Math.tan(fovRad / 2) * camera.aspect);
+      camera.position.set(gapCenterX, 0, introZ);
+    }, undefined, () => {
+      // font failed to load over the network — don't leave the visitor staring at a blank screen
+      if (wrap) wrap.style.height = 'auto';
+      if (content){ content.style.opacity = '1'; content.style.transform = 'none'; content.style.pointerEvents = 'auto'; }
+      if (canvas) canvas.style.display = 'none';
+      if (video) video.style.display = 'none';
+      if (cue) cue.style.display = 'none';
+    });
+    camera.position.set(0, 0, introZ);
+
+    function easeInOutCubic(x){ return x < 0.5 ? 4*x*x*x : 1 - Math.pow(-2*x+2,3)/2; }
+    function smoothstep(a, b, x){ const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); }
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    let progress = 0, targetProgress = 0;
+    function computeProgress(){
+      const rect = wrap.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const scrolled = -rect.top;
+      targetProgress = total > 0 ? Math.min(1, Math.max(0, scrolled / total)) : 0;
+    }
+    window.addEventListener('scroll', computeProgress, { passive: true });
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+    computeProgress();
+
+    // ---- phase boundaries across the whole pinned scroll range ----
+    const holdEnd = 0.16;   // full name held, filling the screen width
+    const diveEnd = 0.42;   // camera passes through the H–G gap
+    const videoEnd = 0.72;  // your video plays here, full-bleed
+    const contentEnd = 0.92; // video fades out, the "Software Developer" content fades in
+    // 0.92 -> 1.00: content holds, pin releases into the page below
+
+    let videoStarted = false;
+
+    function animate(t){
+      requestAnimationFrame(animate);
+      const time = t * 0.001;
+      progress += (targetProgress - progress) * (reduceMotion ? 1 : 0.085);
+
+      nameGroup.rotation.y = Math.sin(time * 0.2) * 0.02;
+      stars.rotation.y = time * 0.008;
+
+      // HOLD -> DIVE: camera pushes straight through the gap between the two words
+      const dive = smoothstep(holdEnd, diveEnd, progress);
+      const diveEase = easeInOutCubic(dive);
+      const camZ = lerp(introZ, -3, diveEase);
+      camera.position.set(gapCenterX, 0, camZ);
+      camera.fov = 42 + diveEase * 10;
+      camera.updateProjectionMatrix();
+      camera.lookAt(gapCenterX, 0, camZ - 10);
+
+      nameGroup.traverse(o => { if (o.material){ o.material.transparent = true; o.material.opacity = 1 - dive; } });
+      canvas.style.opacity = 1 - smoothstep(diveEnd - 0.04, diveEnd, progress);
+
+      // VIDEO: fades in right after the dive completes, plays until videoEnd
+      const videoP = smoothstep(diveEnd, diveEnd + 0.06, progress) * (1 - smoothstep(videoEnd, videoEnd + 0.06, progress));
+      video.style.opacity = videoP;
+      if (progress > diveEnd && !videoStarted){
+        videoStarted = true;
+        video.play().catch(() => {}); // ignored if no source has been added yet
+      }
+      if (progress <= diveEnd && videoStarted){
+        videoStarted = false;
+        video.pause();
+      }
+
+      // CONTENT: video fades out, the software-developer copy fades in — smooth hand-off, no hard cut
+      const contentP = smoothstep(videoEnd, contentEnd, progress);
+      content.style.opacity = contentP;
+      content.style.transform = `translateY(${(1 - contentP) * 20}px)`;
+      content.style.pointerEvents = contentP > 0.6 ? 'auto' : 'none';
+
+      cue.style.opacity = (1 - Math.min(1, progress / 0.1)).toFixed(3);
+
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(animate);
+  })();
 
   // ---------- 3D scroll-scaffolded scene: realistic shaded objects + continuous parallax zoom ----------
   (function(){
@@ -441,103 +727,6 @@
     function fadeGroup(group, factor){
       group.traverse(o => { if (o.material){ (o.__baseOpacity ??= (o.material.opacity ?? 1)); o.material.transparent = true; o.material.opacity = o.__baseOpacity * factor; } });
     }
-
-    // ============ OBJECT 1 — HERO: stylized neural "brain" ============
-    const heroGroup = new THREE.Group();
-    const brainGeo = new THREE.IcosahedronGeometry(1.7, 3);
-    const posAttr = brainGeo.attributes.position;
-    for (let i = 0; i < posAttr.count; i++){
-      const x = posAttr.getX(i), y = posAttr.getY(i), z = posAttr.getZ(i);
-      const fold = Math.sin(x * 4.6) * Math.cos(y * 4.1) * Math.sin(z * 3.9) * 0.15
-                 + Math.sin(x * 8.5 + y * 6.2) * 0.05;
-      const scale = 1 + fold;
-      posAttr.setXYZ(i, x * scale, y * scale, z * scale);
-    }
-    brainGeo.computeVertexNormals();
-    const brainMat = new THREE.MeshStandardMaterial({ color: 0xb98a95, roughness: 0.55, metalness: 0.12, emissive: ACCENT, emissiveIntensity: 0.05, flatShading: false });
-    const brainMesh = new THREE.Mesh(brainGeo, brainMat);
-    brainMesh.scale.set(1.18, 0.92, 1.05);
-    heroGroup.add(brainMesh);
-
-    // central fissure line
-    const fissureCurve = new THREE.CatmullRomCurve3([
-      new THREE.Vector3(0, 1.55, 0.55), new THREE.Vector3(0, 0.7, 0.95),
-      new THREE.Vector3(0, -0.2, 1.0), new THREE.Vector3(0, -1.1, 0.7)
-    ]);
-    const fissure = new THREE.Mesh(new THREE.TubeGeometry(fissureCurve, 24, 0.025, 8, false), new THREE.MeshStandardMaterial({ color: 0x2a1418, roughness: 0.8 }));
-    heroGroup.add(fissure);
-
-    // neural synapse points scattered across the surface + connecting pulses
-    const synCount = 46;
-    const synGeo = new THREE.BufferGeometry();
-    const synPos = new Float32Array(synCount * 3);
-    const synPts = [];
-    for (let i = 0; i < synCount; i++){
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos((Math.random() * 2) - 1);
-      const r = 1.85 + Math.random() * 0.15;
-      const v = new THREE.Vector3(
-        r * Math.sin(phi) * Math.cos(theta) * 1.18,
-        r * Math.sin(phi) * Math.sin(theta) * 0.92,
-        r * Math.cos(phi) * 1.05
-      );
-      synPts.push(v);
-      synPos.set([v.x, v.y, v.z], i * 3);
-    }
-    synGeo.setAttribute('position', new THREE.BufferAttribute(synPos, 3));
-    const synapses = new THREE.Points(synGeo, new THREE.PointsMaterial({ color: ACCENT, size: 0.045, transparent: true, opacity: 0.85 }));
-    heroGroup.add(synapses);
-
-    const lineVerts = [];
-    for (let i = 0; i < synPts.length; i++){
-      const a = synPts[i];
-      let nearest = null, nd = Infinity;
-      for (let j = 0; j < synPts.length; j++){
-        if (i === j) continue;
-        const d = a.distanceTo(synPts[j]);
-        if (d < nd){ nd = d; nearest = synPts[j]; }
-      }
-      if (nearest && nd < 1.1){ lineVerts.push(a.x, a.y, a.z, nearest.x, nearest.y, nearest.z); }
-    }
-    const lineGeo = new THREE.BufferGeometry();
-    lineGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(lineVerts), 3));
-    const neuralLines = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({ color: ACCENT, transparent: true, opacity: 0.28 }));
-    heroGroup.add(neuralLines);
-
-    const ringGeo = new THREE.TorusGeometry(2.7, 0.02, 8, 64);
-    const ring1 = new THREE.Mesh(ringGeo, glowMat(ACCENT, 0.8));
-    ring1.rotation.x = Math.PI / 2.3;
-    const ring2 = ring1.clone(); ring2.rotation.x = Math.PI / 1.6; ring2.rotation.y = 0.6;
-    heroGroup.add(ring1, ring2);
-    heroGroup.position.x = rightX;
-    scene.add(heroGroup);
-
-    // ============ OBJECT 2 — SKILLS: realistic microchip (PCB body + gold pins + die) ============
-    const chipGroup = new THREE.Group();
-    const chipBody = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.16, 1.8), bodyMat(0x14181f, 0.5, 0.3));
-    chipGroup.add(chipBody);
-    const chipDie = new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.08, 0.85), glassMat());
-    chipDie.position.y = 0.12;
-    chipGroup.add(chipDie);
-    const chipLabel = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.02, 0.5), glowMat(ACCENT, 0.9));
-    chipLabel.position.y = 0.17;
-    chipGroup.add(chipLabel);
-    const pinMat = bodyMat(0xd7b46a, 0.35, 0.9);
-    const pinGeo = new THREE.BoxGeometry(0.5, 0.04, 0.06);
-    for (let side = 0; side < 4; side++){
-      for (let i = -3; i <= 3; i++){
-        const pin = new THREE.Mesh(pinGeo, pinMat);
-        const offset = i * 0.22;
-        if (side === 0){ pin.position.set(offset, -0.02, 1.0); }
-        else if (side === 1){ pin.position.set(offset, -0.02, -1.0); }
-        else if (side === 2){ pin.rotation.y = Math.PI/2; pin.position.set(1.0, -0.02, offset); }
-        else { pin.rotation.y = Math.PI/2; pin.position.set(-1.0, -0.02, offset); }
-        chipGroup.add(pin);
-      }
-    }
-    chipGroup.position.set(rightX, 0, 0);
-    chipGroup.visible = false;
-    scene.add(chipGroup);
 
     // ============ OBJECT 3 — PROJECTS: realistic laptop (shaded, hinged screen) ============
     const laptopGroup = new THREE.Group();
@@ -633,7 +822,7 @@
     hpGroup.visible = false;
     scene.add(hpGroup);
 
-    const objects = { top: heroGroup, skills: chipGroup, projects: laptopGroup, bizprime: bizGroup, contact: hpGroup };
+    const objects = { projects: laptopGroup, bizprime: bizGroup, contact: hpGroup };
     const sectionIds = Object.keys(objects);
     const sectionEls = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
 
@@ -707,18 +896,7 @@
       const p = sectionProgress;
 
       // HERO / ABOUT background object
-      heroGroup.rotation.y = p * Math.PI * 1.6 + time * 0.12;
-      heroGroup.rotation.x = p * Math.PI * 0.5 + Math.sin(time * 0.3) * 0.05;
-      ring1.rotation.z = time * 0.25;
-      ring2.rotation.z = -time * 0.18;
-
-      // SKILLS — chip: slow deliberate rotation, subtle hover, pulsing die
-      chipGroup.rotation.y = p * Math.PI * 1.4 + time * 0.2;
-      chipGroup.rotation.x = Math.sin(time * 0.6) * 0.06;
-      chipGroup.position.y = Math.sin(time * 1.1) * 0.1;
-      const pulse = 1 + Math.sin(time * 2.4) * 0.05;
-      chipDie.scale.set(pulse, 1, pulse);
-      chipLabel.material.emissiveIntensity = 0.7 + Math.sin(time * 2.4) * 0.3;
+      // (hero left untouched — no background object here)
 
       // PROJECTS — laptop lid opens with scroll
       screenPivot.rotation.x = -Math.PI / 2 + p * (Math.PI / 2) * 1.1;
@@ -758,7 +936,6 @@
     }
     requestAnimationFrame(animate);
   })();
-
 </script>
 
 </body>
